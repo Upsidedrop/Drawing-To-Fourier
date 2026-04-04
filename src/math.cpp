@@ -3,7 +3,6 @@
 using namespace std;
 
 namespace Math{
-    constexpr double SCALE_FACTOR = 120;
     constexpr double INTEGRAL_PRECISION = 10000;
     float distanceBetween(SDL_Point p_point1, SDL_Point p_point2){
         return sqrt(pow(p_point1.x - p_point2.x, 2) + pow(p_point1.y - p_point2.y, 2));

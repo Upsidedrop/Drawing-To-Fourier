@@ -40,13 +40,14 @@ double DrawnEq::checkAccuracy(vector<complex<double>> goal){
    /* for(int i = 0; i < goal.size(); ++i){
 	
     }*/
+   return 0;
 }
-complex<double> DrawnEq::getValue(double t){
+complex<double> DrawnEq::getValue(complex<double> t){
     std::complex<double> sum = 0;
     int vecNum = (coefficients.size() - 1) / 2;
     auto arrCoeff = vector<complex<double>>(coefficients.begin(), coefficients.end());
     for(int i = -vecNum; i <= vecNum; ++i){
-	sum += arrCoeff[i + vecNum] * exp(i * 2 * M_PI * 1i * t);
+	    sum += arrCoeff[i + vecNum] * exp(i * 2 * M_PI * 1i * t);
     }
-    return sum;
+    return sum * Math::SCALE_FACTOR;
 }

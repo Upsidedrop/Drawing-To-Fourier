@@ -20,6 +20,10 @@ int main(){
     std::list<SDL_Point> points;
     float distanceTravelled = 0;
 
+    DrawnEq* eq = nullptr;
+
+    std::complex<double> mousePos = 0;
+
     bool drawing = false;
     while(gameRunning){
         SDL_RenderClear(renderer);
@@ -41,8 +45,8 @@ int main(){
                     if(drawing){
                         drawing = false;
                         
-                        DrawnEq eq(points, distanceTravelled);
-                        eq.printDesmosSyntax();
+                        eq = new DrawnEq(points, distanceTravelled);
+                        eq -> printDesmosSyntax();
 
                         break;
                     }
@@ -51,6 +55,12 @@ int main(){
                 break;
                 case SDL_MOUSEMOTION:
                 {
+                    if(eq != nullptr){
+                        int x, y;
+                        SDL_GetMouseState( &x, &y );
+
+                        mousePos = {(double)x / 800, 0};
+                    }
                     if(!drawing){
                         break;
                     }
@@ -68,11 +78,19 @@ int main(){
             std::vector<SDL_Point> vec(points.begin(), points.end());
             SDL_RenderDrawLines(renderer, vec.data(), vec.size());
         }
+        
 
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        if(eq != nullptr){
+            std::cout << mousePos.real() << " " << mousePos.imag() << "\n";
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+            auto res = eq -> getValue(mousePos);
+            SDL_RenderDrawPoint(renderer, res.real(), res.imag());
+        }
 
         SDL_RenderPresent(renderer);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     }
     SDL_DestroyWindow(window);
+    delete eq;
 }
